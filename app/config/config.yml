@@ -70,3 +70,32 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: AppBundle\Entity\User
+
+fr3d_ldap:
+    driver:
+        host:                192.168.1.23
+#       port:                389    # Optionnel
+#       username:            foo    # Optionnel
+#       password:            bar    # Optionnel
+#       bindRequiresDn:      true   # Optionnel
+#       baseDn:              ou=users, dc=host, dc=foo   # Optionnel
+#       accountFilterFormat: (&(uid=%s)) # Optionnel. sprintf format %s sera le nom d'utilisateur
+#       optReferrals:        false  # Optionnel
+#       useSsl:              true   # Active l’utilisation de SSL. Optionnel
+#       useStartTls:         true   # Active l’utilisation de TLS. Optionnel
+#       accountCanonicalForm: 3 # ACCTNAME_FORM_BACKSLASH cela est nécessaire uniquement si vos utilisateurs doivent se connecter avec quelque chose comme HOST \ User
+#       accountDomainName: HOST
+#       accountDomainNameShort: HOST
+    user:
+        baseDn: ou=users, dc=host, dc=foo
+        filter: (&(ObjectClass=Person))
+#       usernameAttribute: uid # Optionnel
+        attributes:          # Spécifie les attributs de mapping ldap [ldap attribut, méthode de l’objet utilisateur]
+            - { ldap_attr: uid,  user_method: setUsername }
+            - { ldap_attr: mail, user_method: setEmail }
+
+#           - { ldap_attr: ...,  user_method: ... }         # Optionnel
+#   service:
+#       user_hydrator: fr3d_ldap.user_hydrator.default # Surchage le user_hydrator par défaut
+#       ldap_manager: fr3d_ldap.ldap_manager.default   # Surcharge le ldap_manager par défaut
+#       ldap_driver: fr3d_ldap.ldap_driver.zend        # Surcharge le ldap_driver par défaut
